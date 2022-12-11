@@ -77,7 +77,7 @@ public class SalvoController {
                 .stream()
                 .map(ship -> shipDTO(ship))
                 .collect(Collectors.toList()));
-        dto.put("salvos", getTurnsMap(requesterGp, thisGame.getGamePlayers(), opponent));
+        dto.put("salvos", getTurnsList(requesterGp, thisGame.getGamePlayers(), opponent));
         return dto;
     }
 
@@ -99,29 +99,30 @@ public class SalvoController {
         return dto;
     }
 
-    private Map<Long, Object> getTurnsMap(GamePlayer requesterGp, Set<GamePlayer> bothGps, GamePlayer opponent) {
-        Map<Long, Object> turnObject = new LinkedHashMap<>();
+    private List<Object> getTurnsList(GamePlayer requesterGp, Set<GamePlayer> bothGps, GamePlayer opponent) {
+        List<Object> turnList = new LinkedList<>();
         Long turns = (long) getTurnsQuantity(bothGps);
         //System.out.println("quantity of turns " + turns);
         for (Long i = 1L; i <= turns; i++) {
-            turnObject.put(i, getMapPlayers(i,opponent,requesterGp));
+            turnList.add(getMapPlayers(i,requesterGp));
+            if (opponent != null){
+                turnList.add(getMapPlayers(i,opponent));
+            }
         }
-        return turnObject;
+        return turnList;
     }
 
-    private Map<Long, Object> getMapPlayers(Long turn, GamePlayer opponent, GamePlayer requesterGp) {
-        Map<Long, Object> eachPlayerPerTurn = new LinkedHashMap<>();
-
-        if (opponent != null){
-            eachPlayerPerTurn.put(requesterGp.getPlayer().getPlayerId(),getSalvoInfo(turn, requesterGp));
-            eachPlayerPerTurn.put(opponent.getPlayer().getPlayerId(),getSalvoInfo(turn, opponent));
-        }
-        return eachPlayerPerTurn;
+    private Map<String, Object> getMapPlayers(Long turn, GamePlayer gamePlayer) {
+        Map<String, Object> playerPerTurn = new LinkedHashMap<>();
+        playerPerTurn.put("turn", turn);
+        playerPerTurn.put("player", gamePlayer.getPlayer().getPlayerId());
+        playerPerTurn.put("salvo",getSalvoInfo(turn, gamePlayer));
+        return playerPerTurn;
     }
 
     private Map<String, Object> getSalvoInfo(Long turn, GamePlayer gamePlayer) {
         Map<String, Object> eachPlayerSalvoPerTurn = new LinkedHashMap<>();
-        eachPlayerSalvoPerTurn.put("salvo", getSalvoInformation(turn, gamePlayer));
+        eachPlayerSalvoPerTurn.put("locations", getSalvoInformation(turn, gamePlayer));
         eachPlayerSalvoPerTurn.put("shipsStatus", getShipsStatus(turn, gamePlayer));
         return eachPlayerSalvoPerTurn;
     }
