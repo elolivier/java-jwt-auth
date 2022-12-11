@@ -20,7 +20,8 @@ public class SalvoApplication {
 	public CommandLineRunner initData(PlayerRepository playerRepository,
 									  GameRepository gameRepository,
 									  GamePlayerRepository gamePlayerRepository,
-									  ShipRepository shipRepository) {
+									  ShipRepository shipRepository,
+									  SalvoRepository salvoRepository) {
 		return args -> {
 			Player player1 = new Player("Joker", "player1@mail.com", "12345");
 			Player player2 = new Player("Neo", "player2@mail.com", "56789");
@@ -43,7 +44,6 @@ public class SalvoApplication {
 			List<String> sh2_loc = new ArrayList<>(Arrays.asList("C2", "C3", "C4"));
 			List<String> sh3_loc = new ArrayList<>(Arrays.asList("A1", "A2", "A3", "A4"));
 			List<String> sh4_loc = new ArrayList<>(Arrays.asList("F2", "G2", "H2"));
-
 
 			playerRepository.save(player1);
 			playerRepository.save(player2);
@@ -75,6 +75,19 @@ public class SalvoApplication {
 			shipRepository.save(ship4);
 			shipRepository.save(ship5);
 			shipRepository.save(ship6);
+
+			List<String> sal1_loc1_1 = new ArrayList<>(Arrays.asList("F2", "H1", "A1"));
+			List<String> sal1_loc2_1 = new ArrayList<>(Arrays.asList("F6", "C3", "C2"));
+			List<String> sal1_loc1_2 = new ArrayList<>(Arrays.asList("J4", "G2", "H2"));
+			List<String> sal1_loc2_2 = new ArrayList<>(Arrays.asList("C7", "A3", "C4"));
+			Salvo salvo1_1 = new Salvo(1, sal1_loc1_1, gamePlayer1);
+			Salvo salvo1_2 = new Salvo(1, sal1_loc2_1, gamePlayer2);
+			Salvo salvo1_3 = new Salvo(2, sal1_loc1_2, gamePlayer1);
+			Salvo salvo1_4 = new Salvo(2, sal1_loc2_2, gamePlayer2);
+			salvoRepository.save(salvo1_1);
+			salvoRepository.save(salvo1_2);
+			salvoRepository.save(salvo1_3);
+			salvoRepository.save(salvo1_4);
 		};
 	}
 }
