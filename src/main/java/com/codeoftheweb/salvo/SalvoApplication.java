@@ -21,7 +21,8 @@ public class SalvoApplication {
 									  GameRepository gameRepository,
 									  GamePlayerRepository gamePlayerRepository,
 									  ShipRepository shipRepository,
-									  SalvoRepository salvoRepository) {
+									  SalvoRepository salvoRepository,
+									  ScoreRepository repScore) {
 		return args -> {
 			Player player1 = new Player("Joker", "player1@mail.com", "12345");
 			Player player2 = new Player("Neo", "player2@mail.com", "56789");
@@ -44,6 +45,10 @@ public class SalvoApplication {
 			List<String> sh2_loc = new ArrayList<>(Arrays.asList("C2", "C3", "C4"));
 			List<String> sh3_loc = new ArrayList<>(Arrays.asList("A1", "A2", "A3", "A4"));
 			List<String> sh4_loc = new ArrayList<>(Arrays.asList("F2", "G2", "H2"));
+			Score score3 = new Score(game2, player3, 0.5);
+			Score score4 = new Score(game2, player4, 0.5);
+			Score score5 = new Score(game3, player2, 0.0);
+			Score score6 = new Score(game3, player3, 1.0);
 
 			playerRepository.save(player1);
 			playerRepository.save(player2);
@@ -88,6 +93,10 @@ public class SalvoApplication {
 			salvoRepository.save(salvo1_2);
 			salvoRepository.save(salvo1_3);
 			salvoRepository.save(salvo1_4);
+			repScore.save(score3);
+			repScore.save(score4);
+			repScore.save(score5);
+			repScore.save(score6);
 		};
 	}
 }

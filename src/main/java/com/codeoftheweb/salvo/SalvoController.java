@@ -50,6 +50,7 @@ public class SalvoController {
         dto.put("game_player_id", game_player.getGamePlayerId());
         dto.put("joined", game_player.getPlayerAddDate());
         dto.put("player", game_player.getPlayer());
+        dto.put("score", game_player.getScore());
         return dto;
     }
 
@@ -79,6 +80,86 @@ public class SalvoController {
                 .collect(Collectors.toList()));
         dto.put("salvos", getTurnsList(requesterGp, thisGame.getGamePlayers(), opponent));
         return dto;
+    }
+
+    @Autowired
+    ScoreRepository repoScore;
+
+    private int getStateOfGame(GamePlayer gpRequester, GamePlayer opponent) {
+        int stateOfGame;
+        //State 1: Place your ships
+        if(gpRequester.getShips().size() == 0) {
+            stateOfGame = 1;
+        }
+        //State 2: Waiting for opponent
+        else if(opponent == null) {
+            stateOfGame = 2;
+        }
+        //State 3: Waiting for opponent place ships
+        else if(opponent.getShips().size() == 0) {
+            stateOfGame = 3;
+        }
+        //State 6: All your ships sunk (you lose)
+        else if(allSunk(gpRequester)) {
+            stateOfGame = 6;
+            Score testLoser = repoScore.findByGameAndPlayer(gpRequester.getGame(), gpRequester.getPlayer());
+            Score loser = new Score(gpRequester.getGame(), gpRequester.getPlayer(), 0.0);
+            if(testLoser == null) {
+                repoScore.save(loser);
+            }
+        }
+        //State 7: All your enemy ships sunk (you win)
+        else if(allSunk(opponent)) {
+            stateOfGame = 7;
+            Score test = repoScore.findByGameAndPlayer(gpRequester.getGame(), gpRequester.getPlayer());
+            Score winner = new Score(gpRequester.getGame(), gpRequester.getPlayer(), 1.0);
+            if(test == null) {
+                repoScore.save(winner);
+            }
+        }
+
+        //State 4-5: Waiting for opponent to shoot or shoot
+        else if(gpRequester.getGamePlayerId() < opponent.getGamePlayerId()) {
+            if(gpRequester.salvos.size() > opponent.salvos.size()) {
+                //State 4: Waiting for opponent to shoot
+                stateOfGame = 4;
+            }else {
+                //State 5: Shoot your salvo
+                stateOfGame = 5;
+            }
+        }
+        //State 4-5: Waiting for opponent to shoot or shoot
+        else if(gpRequester.getGamePlayerId() > opponent.getGamePlayerId()) {
+            if(gpRequester.salvos.size() == opponent.salvos.size()) {
+                //State 4: Waiting for opponent to shoot
+                stateOfGame = 4;
+            }else {
+                //State 5: Shoot your salvo
+                stateOfGame = 5;
+            }
+        }
+
+        else {
+            stateOfGame = 9;
+        }
+        return stateOfGame;
+    }
+
+    private boolean allSunk(GamePlayer gp) {
+        boolean gameOver;
+        int ships=0;
+        for (Ship ship : gp.getShips()) {
+            boolean sunk = isSink(gp, ship);
+            if (sunk) {
+                ships++;
+            }
+        }
+        if(ships == gp.getShips().size()) {
+            gameOver = true;
+        }else {
+            gameOver = false;
+        }
+        return gameOver;
     }
 
     //This function return the GamePlayer of the opponent or null
@@ -215,4 +296,39 @@ public class SalvoController {
                 .size();
         return turns;
     }
+
+    //-------------------TASK 5--------------------
+    @Autowired
+    PlayerRepository repoPlayer;
+
+    @RequestMapping("/leaderboard")
+    public List<Object> getApiLeaderboard() {
+        return repoPlayer
+                .findAll()
+                .stream()
+                .map(player -> boardDTO(player))
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, Object> boardDTO(Player player) {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("player", player.getUserName());
+        dto.put("scores", getPlayerScores(player.getScores()));
+        return dto;
+    }
+
+    private Map<String, Object> getPlayerScores(Set<Score> scores) {
+        Map<String, Object> scoreMap = new LinkedHashMap<>();
+        Predicate<Score> filterWon = score -> score.getScore().equals(1.0);
+        Predicate<Score> filterTied = score -> score.getScore().equals(0.5);
+        Predicate<Score> filterLost = score -> score.getScore().equals(0.0);
+        scoreMap.put("won", scores.stream().filter(filterWon).count());
+        scoreMap.put("lost", scores.stream().filter(filterLost).count());
+        scoreMap.put("tied", scores.stream().filter(filterTied).count());
+        scoreMap.put("score", (scores.stream().filter(filterWon).count())*1.0 +
+                (scores.stream().filter(filterTied).count())*0.5);
+        return scoreMap;
+    }
+    //-------------------JAVA 2 - TASK 1--------------------
+
 }

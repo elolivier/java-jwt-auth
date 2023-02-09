@@ -64,6 +64,32 @@ public class Player {
         games_player.add(game_player);
     }
 
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+    Set<Score> scores;
+
+    public void addScore(Score score) {
+        score.setPlayer(this);
+        scores.add(score);
+    }
+    @JsonIgnore
+    public Set<Score> getScores() {
+        return scores;
+    }
+
+    public Double getScore(Game game) {
+        Double score;
+        List<Score> scoreFilter2 = scores.stream()
+                .filter(scoreTest -> scoreTest.getPlayer().equals(this)
+                        && scoreTest.getGame().equals(game))
+                .collect(Collectors.toList());
+        if(scoreFilter2.size() < 1) {
+            score = null;
+        } else {
+            score = scoreFilter2.get(0).getScore();
+        }
+        return score;
+    }
+
     @JsonIgnore
     public List<Game> getGames() {
         return games_player.stream().map(sub -> sub.getGame()).collect(Collectors.toList());

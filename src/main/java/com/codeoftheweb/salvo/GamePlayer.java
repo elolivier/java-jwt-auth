@@ -84,6 +84,12 @@ public class GamePlayer {
         return game_player_id;
     }
 
+    @JsonIgnore
+    public Double getScore() {
+        Double score = this.getPlayer().getScore(this.getGame());
+        return score;
+    }
+
     @Override
     public String toString() {
         return "GamePlayer{" +
