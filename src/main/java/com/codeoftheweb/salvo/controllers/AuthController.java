@@ -62,15 +62,18 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+        UserInfoResponse responseBody = new UserInfoResponse(
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles,
+                jwtCookie.getValue()
+        );
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "localhost:8080")
-                .body(new UserInfoResponse(userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles,
-                        "jwtCookie.toString()"));
+                .body(responseBody);
     }
 
     @PostMapping("/signup")

@@ -10,6 +10,14 @@ public class UserInfoResponse {
 
     private String accessToken;
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
     public UserInfoResponse(Long id, String username, String email, List<String> roles, String accessToken) {
         this.id = id;
         this.username = username;
