@@ -1,7 +1,7 @@
-package com.codeoftheweb.salvo.filter;
+package com.codeoftheweb.salvo.security;
 
 import com.codeoftheweb.salvo.PlayerRepository;
-import com.codeoftheweb.salvo.util.JwtUtil;
+import com.codeoftheweb.salvo.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private PlayerRepository playerRepository;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,10 +40,10 @@ public class JwtFilter extends OncePerRequestFilter {
         final String token = header.split(" ")[1].trim();
         // Get user identity and set it on the spring security context
         UserDetails userDetails = playerRepository
-                .findByUsername(jwtUtil.getUsernameFromToken(token));
+                .findByUsername(jwtUtils.getUsernameFromToken(token));
 
         // Get jwt token and validate
-        if (!jwtUtil.validateToken(token, userDetails)) {
+        if (!jwtUtils.validateToken(token, userDetails)) {
             filterChain.doFilter(request, response);
             return;
         }

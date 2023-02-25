@@ -1,6 +1,6 @@
 package com.codeoftheweb.salvo;
 
-import com.codeoftheweb.salvo.util.CustomPasswordEncoder;
+import com.codeoftheweb.salvo.utils.CustomPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

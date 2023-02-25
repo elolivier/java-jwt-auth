@@ -1,8 +1,11 @@
-package com.codeoftheweb.salvo.web;
+package com.codeoftheweb.salvo.controllers;
 
 import com.codeoftheweb.salvo.Player;
-import com.codeoftheweb.salvo.dto.AuthCredentialsRequest;
-import com.codeoftheweb.salvo.util.JwtUtil;
+import com.codeoftheweb.salvo.PlayerRepository;
+import com.codeoftheweb.salvo.controllers.dto.SigInRequest;
+import com.codeoftheweb.salvo.controllers.dto.SignUpRequest;
+import com.codeoftheweb.salvo.utils.CustomPasswordEncoder;
+import com.codeoftheweb.salvo.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,9 +31,13 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private JwtUtil jwtUtil;
+    private PlayerRepository playerRepository;
+    @Autowired
+    private CustomPasswordEncoder customPasswordEncoder;
+    @Autowired
+    private JwtUtils jwtUtils;
     @PostMapping("login")
-    public ResponseEntity<?> login (@RequestBody AuthCredentialsRequest request) {
+    public ResponseEntity<?> login (@RequestBody SigInRequest request) {
         try {
             Authentication authenticate = authenticationManager
                     .authenticate(
@@ -49,11 +57,33 @@ public class AuthController {
             return ResponseEntity.ok()
                     .header(
                             HttpHeaders.AUTHORIZATION,
-                            jwtUtil.generateToken(player)
+                            jwtUtils.generateToken(player)
                     )
                     .body(responseBody);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+        // Validate request data
+        if (playerRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+        }
+        if (playerRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        // Create new player's account
+        Player player = new Player(
+                signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                customPasswordEncoder.getPasswordEncoder().encode(signUpRequest.getPassword())
+        );
+
+        playerRepository.save(player);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }

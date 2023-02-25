@@ -1,7 +1,11 @@
-package com.codeoftheweb.salvo.dto;
+package com.codeoftheweb.salvo.controllers.dto;
 
-public class AuthCredentialsRequest {
+import javax.validation.constraints.NotBlank;
+
+public class SigInRequest {
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
 
     public String getUsername() {

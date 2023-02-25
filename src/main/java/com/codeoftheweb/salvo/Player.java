@@ -2,7 +2,7 @@ package com.codeoftheweb.salvo;
 
 /*import com.fasterxml.jackson.annotation.JsonIgnore;*/
 
-import com.codeoftheweb.salvo.domain.Authority;
+import com.codeoftheweb.salvo.security.Authority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;

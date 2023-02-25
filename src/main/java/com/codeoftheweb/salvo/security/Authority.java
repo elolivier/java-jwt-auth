@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo.domain;
+package com.codeoftheweb.salvo.security;
 
 import com.codeoftheweb.salvo.Player;
 import org.hibernate.annotations.GenericGenerator;

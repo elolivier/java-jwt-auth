@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo.web;
+package com.codeoftheweb.salvo.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
