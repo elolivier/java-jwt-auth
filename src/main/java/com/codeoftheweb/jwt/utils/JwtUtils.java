@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo.utils;
+package com.codeoftheweb.jwt.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

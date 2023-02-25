@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo.controllers;
+package com.codeoftheweb.jwt.controllers;
 
 public class MessageResponse {
     private String message;

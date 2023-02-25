@@ -1,7 +1,7 @@
-package com.codeoftheweb.salvo.config;
+package com.codeoftheweb.jwt.config;
 
-import com.codeoftheweb.salvo.security.JwtFilter;
-import com.codeoftheweb.salvo.utils.CustomPasswordEncoder;
+import com.codeoftheweb.jwt.security.JwtFilter;
+import com.codeoftheweb.jwt.utils.CustomPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

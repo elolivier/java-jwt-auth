@@ -1,6 +1,6 @@
-package com.codeoftheweb.salvo.security;
+package com.codeoftheweb.jwt.security;
 
-import com.codeoftheweb.salvo.Player;
+import com.codeoftheweb.jwt.Player;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;

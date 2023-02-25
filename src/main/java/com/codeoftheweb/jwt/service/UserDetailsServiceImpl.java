@@ -1,7 +1,7 @@
-package com.codeoftheweb.salvo.service;
+package com.codeoftheweb.jwt.service;
 
-import com.codeoftheweb.salvo.PlayerRepository;
-import com.codeoftheweb.salvo.utils.CustomPasswordEncoder;
+import com.codeoftheweb.jwt.PlayerRepository;
+import com.codeoftheweb.jwt.utils.CustomPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

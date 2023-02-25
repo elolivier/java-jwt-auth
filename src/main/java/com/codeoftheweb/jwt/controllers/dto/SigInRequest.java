@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo.controllers.dto;
+package com.codeoftheweb.jwt.controllers.dto;
 
 import javax.validation.constraints.NotBlank;
 

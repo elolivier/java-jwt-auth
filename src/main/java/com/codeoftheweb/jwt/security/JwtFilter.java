@@ -1,7 +1,7 @@
-package com.codeoftheweb.salvo.security;
+package com.codeoftheweb.jwt.security;
 
-import com.codeoftheweb.salvo.PlayerRepository;
-import com.codeoftheweb.salvo.utils.JwtUtils;
+import com.codeoftheweb.jwt.PlayerRepository;
+import com.codeoftheweb.jwt.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,11 +1,11 @@
-package com.codeoftheweb.salvo.controllers;
+package com.codeoftheweb.jwt.controllers;
 
-import com.codeoftheweb.salvo.Player;
-import com.codeoftheweb.salvo.PlayerRepository;
-import com.codeoftheweb.salvo.controllers.dto.SigInRequest;
-import com.codeoftheweb.salvo.controllers.dto.SignUpRequest;
-import com.codeoftheweb.salvo.utils.CustomPasswordEncoder;
-import com.codeoftheweb.salvo.utils.JwtUtils;
+import com.codeoftheweb.jwt.Player;
+import com.codeoftheweb.jwt.PlayerRepository;
+import com.codeoftheweb.jwt.controllers.dto.SigInRequest;
+import com.codeoftheweb.jwt.controllers.dto.SignUpRequest;
+import com.codeoftheweb.jwt.utils.CustomPasswordEncoder;
+import com.codeoftheweb.jwt.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

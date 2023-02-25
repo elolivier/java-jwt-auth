@@ -1,19 +1,19 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.jwt;
 
 /*import com.fasterxml.jackson.annotation.JsonIgnore;*/
 
-import com.codeoftheweb.salvo.security.Authority;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.codeoftheweb.jwt.security.Authority;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 public class Player implements UserDetails {
@@ -88,45 +88,6 @@ public class Player implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
-    Set<GamePlayer> games_player;
-
-    public void addGamePlayer(GamePlayer game_player) {
-        game_player.setPlayer(this);
-        games_player.add(game_player);
-    }
-
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
-    Set<Score> scores;
-
-    public void addScore(Score score) {
-        score.setPlayer(this);
-        scores.add(score);
-    }
-    @JsonIgnore
-    public Set<Score> getScores() {
-        return scores;
-    }
-
-    public Double getScore(Game game) {
-        Double score;
-        List<Score> scoreFilter2 = scores.stream()
-                .filter(scoreTest -> scoreTest.getPlayer().equals(this)
-                        && scoreTest.getGame().equals(game))
-                .collect(Collectors.toList());
-        if(scoreFilter2.size() < 1) {
-            score = null;
-        } else {
-            score = scoreFilter2.get(0).getScore();
-        }
-        return score;
-    }
-
-    @JsonIgnore
-    public List<Game> getGames() {
-        return games_player.stream().map(sub -> sub.getGame()).collect(Collectors.toList());
     }
 
     @Override

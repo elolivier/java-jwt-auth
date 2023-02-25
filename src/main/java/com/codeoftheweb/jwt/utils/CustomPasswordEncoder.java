@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo.utils;
+package com.codeoftheweb.jwt.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
