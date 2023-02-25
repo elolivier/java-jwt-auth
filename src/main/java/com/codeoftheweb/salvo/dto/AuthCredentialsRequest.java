@@ -1,12 +1,7 @@
-package com.codeoftheweb.salvo.payload.request;
+package com.codeoftheweb.salvo.dto;
 
-import javax.validation.constraints.NotBlank;
-
-public class LoginRequest {
-    @NotBlank
+public class AuthCredentialsRequest {
     private String username;
-
-    @NotBlank
     private String password;
 
     public String getUsername() {

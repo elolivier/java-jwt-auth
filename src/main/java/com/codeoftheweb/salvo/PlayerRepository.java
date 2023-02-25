@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
-interface PlayerRepository extends JpaRepository<Player, Long> {
-    Player findByUserName(String username);
+public interface PlayerRepository extends JpaRepository<Player, Long> {
+    Player findByUsername(String username);
 }
+

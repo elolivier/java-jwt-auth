@@ -1,26 +1,24 @@
-package com.codeoftheweb.salvo.security.services;
+package com.codeoftheweb.salvo.service;
 
+import com.codeoftheweb.salvo.PlayerRepository;
+import com.codeoftheweb.salvo.util.CustomPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.codeoftheweb.salvo.models.User;
-import com.codeoftheweb.salvo.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
     @Autowired
-    UserRepository userRepository;
+    private CustomPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-
-        return UserDetailsImpl.build(user);
+        return playerRepository.findByUsername(username);
     }
 }

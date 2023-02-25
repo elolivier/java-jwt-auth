@@ -312,7 +312,7 @@ public class SalvoController {
 
     private Map<String, Object> boardDTO(Player player) {
         Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("player", player.getUserName());
+        dto.put("player", player.getUsername());
         dto.put("scores", getPlayerScores(player.getScores()));
         return dto;
     }

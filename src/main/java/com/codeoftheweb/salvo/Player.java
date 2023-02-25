@@ -1,22 +1,28 @@
 package com.codeoftheweb.salvo;
 
 /*import com.fasterxml.jackson.annotation.JsonIgnore;*/
+
+import com.codeoftheweb.salvo.domain.Authority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-public class Player {
+public class Player implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long player_id;
-    private String userName;
+    private String username;
     private String email;
     private String password;
 
@@ -30,26 +36,54 @@ public class Player {
 
     public Player() {}
 
-    public Player(String userName, String email, String password) {
-        this.userName = userName;
+    public Player(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public long getPlayerId() {
         return player_id;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> roles = new ArrayList<>();
+        roles.add(new Authority("ROLE_USER"));
+        return roles;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -98,7 +132,7 @@ public class Player {
     @Override
     public String toString() {
         return "Player{" +
-                "userName='" + userName + '\'' +
+                "username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

@@ -1,5 +1,7 @@
 package com.codeoftheweb.salvo;
 
+import com.codeoftheweb.salvo.util.CustomPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class SalvoApplication {
+	@Autowired
+	private CustomPasswordEncoder customPasswordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SalvoApplication.class, args);
@@ -24,11 +28,11 @@ public class SalvoApplication {
 									  SalvoRepository salvoRepository,
 									  ScoreRepository repScore) {
 		return args -> {
-			Player player1 = new Player("Joker", "player1@mail.com", "12345");
-			Player player2 = new Player("Neo", "player2@mail.com", "56789");
-			Player player3 = new Player("Frodo", "player3@mail.com", "12345");
-			Player player4 = new Player("Nicola", "player4@mail.com", "56789");
-			Player player5 = new Player("Isaac", "player5@mail.com", "12345");
+			Player player1 = new Player("Joker", "player1@mail.com", customPasswordEncoder.getPasswordEncoder().encode("12345"));
+			Player player2 = new Player("Neo", "player2@mail.com", customPasswordEncoder.getPasswordEncoder().encode("56789"));
+			Player player3 = new Player("Frodo", "player3@mail.com", customPasswordEncoder.getPasswordEncoder().encode("12345"));
+			Player player4 = new Player("Nicola", "player4@mail.com", customPasswordEncoder.getPasswordEncoder().encode("56789"));
+			Player player5 = new Player("Isaac", "player5@mail.com", customPasswordEncoder.getPasswordEncoder().encode("12345"));
 			Game game1 = new Game();
 			Game game2 = new Game();
 			Game game3 = new Game();
